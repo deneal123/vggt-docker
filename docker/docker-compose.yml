@@ -1,0 +1,24 @@
+services:
+  vggt-app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        APP_TAG: ${APP_TAG:-dev}
+    container_name: vggt-app
+    ports:
+      - "${SERVER_PORT:-7481}:7481"
+    volumes:
+      - ../app_logs:/app/logs
+    env_file:
+      - ../.env
+    environment:
+      - SERVER_PORT=${SERVER_PORT:-7481}
+      - SERVER_HOST=${SERVER_HOST:-0.0.0.0}
+      - DEBUG=${DEBUG:-false}
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
